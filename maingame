@@ -21,7 +21,6 @@ To quit, press "q".''')
         if input() == 'y'.lower():
             gameIntro()
         else:
-            run(inRoom)
             newRoom()
             
 def gameOver(): # ends game and allows to start new game
@@ -30,11 +29,15 @@ def gameOver(): # ends game and allows to start new game
     if input() == 's':
         newGame()
 
-def attack(yourAttack, enemyDef):
+def attack(yourAttack, enemyDef): # determines if your attack is higher than enemy defense
     if yourAttack >= enemyDef:
         damage = random.randint(1, 3)
         enemyHP -= damage
         print('You hit!  The enemy takes ' + damage + ' damage.')
+    else:
+        damage = random.randint(1,3)
+        yourHP -= damage
+        print('The enemy blocks your attack and attacks back.  You take ' + damage + ' damage.')
     
 commands = {'go':go, 'look':look, 'attack':attack, }
 ##battleComm = ['look', 'run', 'attack', 'block', 'spell']
@@ -46,14 +49,22 @@ yourDefense = 5
 playerHP = 10
 rickard = [yourDefense, yourAttack, playerHP]
 
-##class monster(attack, defense):
-    ##attack = 0
-    ##defense = 0
-    ##pass
+class monster(object):
+    def __init__(self, name):
+        self.name = name
 
-##orc = monster(2, 2)
-##skeleton = monster(1, 1)
-##dragon = (5, 5)
+    def getName(self):
+        return self.name
+
+    def getDefense(self):
+        return self.defense
+
+    def getAttack(self):
+        return self.attack
+    
+    def getHP(self):
+        return self.HP
+    
 
 monsters = ['orc', 'skeleton', 'dragon', 'goblin', 'golem']
 
@@ -73,10 +84,10 @@ of text will go here.
 Story about how Rickard's teacher
 needs him to do something.''')
     print('You enter the mouth of the cave.')
-    run(inRoom)
     newRoom()
 
 def newRoom(): # gens a new random room every time a new room is entered
+    run(inRoom)
     thisRoom = random.randint(0, len(roomAdj)-1)
     thisRoom = roomAdj[thisRoom]
     print('You have entered a ', thisRoom, ' room.')
