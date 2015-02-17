@@ -42,8 +42,8 @@ def battle(): #choose enemy and fight them
         else:
             print('That isn\'t something you can do right now!')
             
-def attack(yourAttack, enemyDef, yourHP): # determines if your attack is higher than enemy defense
-    if yourAttack >= enemyDef:
+def attack(player, enemy): # determines if your attack is higher than enemy defense
+    if player.attack >= enemy.defense:
         damage = random.randint(1, 3)
         enemyHP -= damage
         print('You hit!  The enemy takes ' + damage + ' damage.')
@@ -52,45 +52,35 @@ def attack(yourAttack, enemyDef, yourHP): # determines if your attack is higher 
         yourHP -= damage
         print('The enemy blocks your attack and attacks back.  You take ' + damage + ' damage.')
 
-def block(yourDef, enemyAttack, yourHP):
-    if yourDef >= enemyAttack:
+def block(player, enemy):
+    if player.defense >= enemy.defense:
         print('You blocked the enemy attack!')
     else:
         damage = random.randint(1, 3)
         yourHP -= damage
         print('Your block failed!  You get hit for ' + damage + ' damage.')
 
-def cast(spellsNum, spells):
-    if spellsNum > 0:
+def cast(player):
+    try:
         print('Which spell will you cast?')
-        print(spells)
-    else:
+        print(player.spells)
+    except:
         print('You don\'t currently have any spells!')
-
-spells = ''        
+      
 commands = {'go':go, 'look':look, 'attack':attack, 'block':block, 'cast':cast}
 ##battleComm = ['look', 'run', 'attack', 'block', 'spell']
 roomAdj = ['square', 'dark', 'damp', 'large', 'smelly', 'bright', 'sinister']
 inRoom = ['room', 'rickard', 'me', 'self', 'chest', 'door', 'wall']
-game_state = {'in room':inRoom, 'game over':gameOver, 'new game':newGame, 'battle':battle}
+game_state = {'in room':inRoom, 'game over':False, 'battle':battle}
 
 class creature(object):
     def __init__(self, name, defense, attack, HP):
         self.name = name
-
-    def getName(self):
-        return self.name
-
-    def getDefense(self):
-        return self.defense
-
-    def getAttack(self):
-        return self.attack
+        self.defense = defense
+        self.attack = attack
+        self.HP = HP
     
-    def getHP(self):
-        return self.HP
-    
-rickard = creature('Rickard', '5', '5', '10')
+rickard = creature('Rickard', 5, 5, 10)
 
 monsters = ['orc', 'skeleton', 'dragon', 'goblin', 'golem']
 
@@ -99,8 +89,8 @@ def run(game_state): #allows player to enter commands
         choice = input('Enter a command.').lower()
         if choice in commands:
             game_state = commands[choice](game_state)
-            if 'game over' in game_state: # ends game if player loses
-                break
+        if 'game over' in game_state: # ends game if player loses
+            break
         else:
             print('You can\'t do that!')
 
