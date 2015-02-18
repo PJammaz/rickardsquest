@@ -1,8 +1,19 @@
+'''This is a randomly-generated rogue-like RPG.
+It takes a lot of nods from classic text-based adventures, but the random generation changes the gameplay significantly'''
+
 import random
 
-def go(direction): # player chooses direction to go
+def go(): # player chooses direction to go
     print('Which way would you like to go?')
-    
+    direction = input().lower()
+    try:
+        direction == 'nesw'
+    except:
+        print('Please enter a cardinal direction.')
+    try:
+        direction == door
+    except:
+        print('There is no door in that direction.')    
 
 def look(inRoom): #lets player inspect stats, monsters and parts of rooms etc
     print('What would you like to look at?')
@@ -11,7 +22,6 @@ def look(inRoom): #lets player inspect stats, monsters and parts of rooms etc
         print('You looked at', looked + '.')
     else:
         print('That isn\'t in the room!')
-    run(inRoom)
 
 def newGame(): # runs as soon as game starts
     print('''Rickard's Quest
@@ -44,7 +54,7 @@ def battle(player, enemy): #choose enemy and fight them
             
 def attack(player, enemy): # determines if your attack is higher than enemy defense
     try:
-        game_state[battle]
+        enemy
     except:
         print('You aren\'t fighting anything right now!')
     if player.attack >= enemy.defense:
@@ -56,7 +66,7 @@ def attack(player, enemy): # determines if your attack is higher than enemy defe
         yourHP -= damage
         print('The enemy blocks your attack and attacks back.  You take ' + damage + ' damage.')
 
-def block(player, enemy):
+def block(player, enemy): # determines if your defense is higher than enemy attack
     try:
         game_state[battle]
     except:
@@ -68,27 +78,24 @@ def block(player, enemy):
         yourHP -= damage
         print('Your block failed!  You get hit for ' + damage + ' damage.')
 
-def cast(player):
+def cast(player): #out of known spells, allows player to cast one
     try:
-        print('Which spell will you cast?')
         print(player.spells)
+        print('What spell will you cast?')
     except:
         print('You don\'t currently have any spells!')
       
 commands = {'go':go, 'look':look, 'attack':attack, 'block':block, 'cast':cast}
-##battleComm = ['look', 'run', 'attack', 'block', 'spell']
 roomAdj = ['square', 'dark', 'damp', 'large', 'smelly', 'bright', 'sinister']
-inRoom = ['room', 'rickard', 'me', 'self', 'chest', 'door', 'wall']
-game_state = {'in room':inRoom, 'game over':False, 'battle':battle}
 
-class creature(object):
+class creature(object): # all enemies
     def __init__(self, name, defense, attack, HP):
         self.name = name
         self.defense = defense
         self.attack = attack
         self.HP = HP
 
-class player(creature):
+class player(creature): # player's subclass
     def __init__(self, name, defense, attack, HP, spells, inventory, weapon):
         super().__init__(name, defense, attack, HP)
         self.spells = spells
@@ -100,21 +107,23 @@ orc = creature('orc', 3, 3, 6)
 skeleton = creature('skeleton', 2, 1, 3)
 goblin = creature('goblin', 1, 2, 4)
 monsters = [orc.name, skeleton.name, goblin.name]
+inRoom = ['room', 'rickard', 'me', 'self', 'chest', 'door', 'wall', 'enemy', monsters]
+game_state = {'in room':inRoom, 'game over':False, 'battle':battle}
 
-class weapon(object):
+class weapon(object): # all weapons, only one can be held at a time
     def __init__(self, name, attack, defense, special):
         self.name = name
         self.attack = attack
         self.defense = defense
         self.special = special
 
-class spell(object):
+class spell(object): # all spells
     def __init__(self, name, effect, cooldown):
         self.name = name
         self.effect = effect
         self.cooldown = cooldown
         
-def run(game_state): #allows player to enter commands
+def run(game_state): # main loop, allows entering commands
     while True:
         choice = input('Enter a command.').lower()
         if choice in commands:
@@ -135,7 +144,7 @@ needs him to do something.''')
 def newRoom(): # gens a new random room every time a new room is entered
     thisRoom = random.randint(0, len(roomAdj)-1)
     thisRoom = roomAdj[thisRoom]
-    print('You have entered a ', thisRoom, ' room.')
+    print('You have entered a', thisRoom, 'room.')
     encounter = random.randint(0, 1) # determines whether a monster is in the room
     if encounter == 1:
         run(battle)
@@ -145,8 +154,3 @@ def newRoom(): # gens a new random room every time a new room is entered
 def needHelp():
     if input().lower() == 'help':
         print(commands)
-    
-
-#classes for spells and weapons
-
-
