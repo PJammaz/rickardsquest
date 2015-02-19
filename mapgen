@@ -1,0 +1,23 @@
+'''Generates maps.
+
+{letter(x axis)number(y axis, cannot go below 0):cardinal directions that have doors}
+
+maparray = {m0:'new',}
+
+for maparray{m0:[]}:
+    room = roomgen()
+    maparray += room
+
+if 'n' +1 to y
+if 'e' +1 to x
+if 'w' -1 to x
+if 's' -1 to y
+roomcoords = ^that^
+'''
+
+mapArray = {[15, 0]:'new',}
+
+def createName():
+    for [k][i] in mapArray:
+        if [i] == 'n':
+            newRoom = [k]
