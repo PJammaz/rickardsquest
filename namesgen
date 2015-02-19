@@ -1,0 +1,14 @@
+'''Randomly generates names to be used for monsters and weapons.
+1-, 2-, 3-, or 4-part name chosen.
+if 4-part:
+    name = choose four name parts
+    return name'''
+
+import random
+
+nameParts = 'yes no sure maybe just practice hope this works these will be weird names oh well'.split()
+
+def createName():
+    length = random.randint(0, 4)
+    for i in length:
+        newName = random.randint(len(nameParts - 1))
