@@ -1,14 +1,20 @@
-'''Randomly generates names to be used for monsters and weapons.
-1-, 2-, 3-, or 4-part name chosen.
-if 4-part:
-    name = choose four name parts
-    return name'''
+'''Randomly generates names based on sets of syllables/sounds'''
 
 import random
+from random import choice
 
-nameParts = 'yes no sure maybe just practice hope this works these will be weird names oh well'.split()
+nameParts = 'hy na mel sis re con in ves tin doc tor pep per ne w gam e in tro duc ti on'.split()
+tester = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split()
+merica = 'sm ith joh nso n wil lia ms jo nes bro wn da vis mil ler wil son mo ore tay lor an der son tho mas jac kso whi te har ris mar tin thom pson gar ci a mar tin ez rob in son cl ark rod ri gu ez le wis lee wal ker hall al len yo ung her nan dez ki ng'.split()
+elves = 'eth mel ser ith rel chi far sem lem ar tam nam el kel bar ker tis lor py hon yth'.split()
+orcs = 'rr mrc rg hrr err tro tru gru gra gro pr yrg urg gar mur der die'.split()
 
-def createName():
-    length = random.randint(0, 4)
-    for i in length:
-        newName = random.randint(len(nameParts - 1))
+def createName(howMany, nameSet):
+    newName = ''
+    for k in range(howMany):
+        for i in range(random.randint(1, 5)):
+            newName += choice(nameSet)
+        print(newName)
+        newName = ''
+
+createName(10, tester)
