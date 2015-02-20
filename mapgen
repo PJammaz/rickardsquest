@@ -1,10 +1,8 @@
 '''Generates maps.
 
-{letter(x axis)number(y axis, cannot go below 0):cardinal directions that have doors}
+maparray = {xy:[x, y, directionswdoors]}}
 
-maparray = {m0:'new',}
-
-for maparray{m0:[]}:
+for maparray{xy:[]}:
     room = roomgen()
     maparray += room
 
@@ -14,10 +12,54 @@ if 'w' -1 to x
 if 's' -1 to y
 roomcoords = ^that^
 '''
+from collections import namedtuple
+from pprint import pprint
+from random import choice
 
-mapArray = {[15, 0]:'new',}
 
-def createName():
-    for [k][i] in mapArray:
-        if [i] == 'n':
-            newRoom = [k]
+Room = namedtuple('Room', ['x','y', 'exits', 'description'])
+
+directions =['n', 'e', 's', 'w']
+
+r = Room(15, 0, 'new', 'A Room')
+
+path = {'n':(0,1),
+        's':(0,-1),
+        'e':(1,0),
+        'w':(-1,0)
+        }
+
+reverse_path = {'n':'s',
+                's':'n',
+                'e':'w',
+                'w':'e'
+                }
+grid = {}
+
+def createRooms(r):
+        for exit in r.exits:
+            x = r.x + path[exit][0]
+            y = r.y + path[exit][1]
+
+            new_exits = set([choice(directions) for _ in range(2)])
+            new_exits.add(reverse_path[exit])
+            new_exits = ''.join(new_exits)
+            new_room = Room(x, y, new_exits, 'room')
+            grid[(x, y)] = new_room
+
+        ##if i in grid.exits == True:
+            ##createRooms(i)
+            
+def moreRooms():
+    for i in grid:
+        for exit in i.exits:
+            createRooms()
+
+pprint(grid)
+
+##map_array = {(15, 0):('new')}
+
+'''def createName():
+    direction = {'n':(0,1), 'e':(1,0), 's':(0, -1), 'w':(-1,0)}
+    for k in map_array:
+        print(direction.get(k))'''
